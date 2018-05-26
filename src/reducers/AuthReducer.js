@@ -7,11 +7,21 @@
   remember reducer has same format everytime
   export default w/ 2 args and switch stmt inside function
 */
+import { EMAIL_CHANGED } from '../actions/types';
+
 // very first time a reducer is called, it needs an initial state
 const INITIAL_STATE = { email: '' };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case EMAIL_CHANGED:
+      // update state object here
+      // makes a new object. take all props on existing on the state object
+      // and throw them into the one we are creating with { }
+      // then defined prop email, give it a value of action.payload
+      // then toss it on top of whatever props were on the existing state object
+      // it appends to whatever was provided by the ...state
+      return { ...state, email: action.payload };
     default:
       return state;
   }
