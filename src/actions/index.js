@@ -15,13 +15,39 @@ export const passwordChanged = (text) => {
   return {
     type: PASSWORD_CHANGED,
     payload: text
-  }
-}
+  };
+};
 
 // auth a user, takes a request, only after that request succeeds, do we have the info
 // we need to dispatch an actions
 // new action creator
 export const loginUser = ({ email, password }) => {
-  firebase.auth.signInWithEmailAndPassword(email, password)
-    .then(user => console.log(user));
-}
+  return (dispatch) => {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(user => {
+        dispatch({ type: 'LOGIN_USER_SUCCESS', payload: user });
+      });
+  };
+};
+
+/*
+  What is redux thunk doing for me above?
+  1. action creator called
+  2. action creator returns function
+  3. redux thunk sees that we return a function and calls it with dispatch
+  4. we do our login request
+  5. we wait
+  6. we wait
+  7. request complete, user logged in
+  8. .then runs
+  9. dispatch our action
+*/
+
+/*
+  By using redux thunk we expand what we can return from an action creator
+  to functions as well
+  Returning with an arg of 'dispatch' method
+    -we can manually send an action off to all the reducers in our application
+      - by using this we can do whatever async action we want
+        -logging a user in for example
+*/
