@@ -9,18 +9,20 @@
 */
 import {
   EMAIL_CHANGED,
-  PASSWORD_CHANGED
+  PASSWORD_CHANGED,
+  LOGIN_USER_SUCCESS
 } from '../actions/types';
 
 // very first time a reducer is called, it needs an initial state
 const INITIAL_STATE = {
   email: '',
-  password: ''
+  password: '',
+  user: null
 };
 
 export default (state = INITIAL_STATE, action) => {
   console.log(action);
-  
+
   switch (action.type) {
     case EMAIL_CHANGED:
       // update state object here
@@ -32,6 +34,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, email: action.payload };
     case PASSWORD_CHANGED:
       return { ...state, password: action.payload };
+    case LOGIN_USER_SUCCESS:
+      return { ...state, user: action.payload };
     default:
       return state;
   }
@@ -39,3 +43,5 @@ export default (state = INITIAL_STATE, action) => {
 
 // now we have one piece of state in our application when it first boots up
 // can access it state.auth.email
+
+// commit -m 'hooked loginUser action to auth reducer'
