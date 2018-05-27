@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { emailChanged } from '../actions/';
+import { emailChanged, passwordChanged } from '../actions/';
 import { Card, CardSection, Input, Button } from './common';
 
 
 class LoginForm extends Component {
+
   onEmailChange(text) {
-    this.prop.emailChanged(text);
+    this.props.emailChanged(text);
+  }
+
+  onPasswordChange(text) {
+    this.props.passwordChanged(text);
   }
 
   render() {
@@ -17,6 +22,7 @@ class LoginForm extends Component {
             label="Email"
             placeholder="email@gmail.com"
             onChangeText={this.onEmailChange.bind(this)}
+            value={this.props.email}
           />
         </CardSection>
         <CardSection>
@@ -24,6 +30,8 @@ class LoginForm extends Component {
             secureTextEntry
             label="Password"
             placeholder="Password"
+            onChangeText={this.onPasswordChange.bind(this)}
+            value={this.props.password}
           />
         </CardSection>
         <CardSection>
@@ -36,8 +44,15 @@ class LoginForm extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    email: state.auth.email,
+    password: state.auth.password
+  };
+};
+
 // 2nd arg is the action creator we want to bind to LoginForm component
-export default connect(null, { emailChanged })(LoginForm);
+export default connect(mapStateToProps, { emailChanged, passwordChanged })(LoginForm);
 
 /*
   Interaction btwn react and redux
