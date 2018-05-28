@@ -1,5 +1,4 @@
-// email, phone, and shift fields
-import EMPLOYEE_UPDATE from './types';
+import { EMPLOYEE_UPDATE } from './types';
 
 export const employeeUpdate = ({ prop, value }) => {
   return {
@@ -7,3 +6,4 @@ export const employeeUpdate = ({ prop, value }) => {
     payload: { prop, value }
   };
 };
+// email, phone, and shift fields
