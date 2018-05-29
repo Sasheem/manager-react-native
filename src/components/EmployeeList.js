@@ -1,30 +1,64 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import { employeesFetch } from '../actions';
-
+import ListItem from './ListItem';
 
 class EmployeeList extends Component {
   // as soon as component is rendered to device, we attempt to fetch employeeList
   componentWillMount() {
+    this.createDataSource();
+  }
+
+  createDataSource() {
     this.props.employeesFetch();
+  }
+
+  renderRow(employee) {
+    return <ListItem employee={employee} />
   }
 
   render() {
     return (
-      <View>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-      </View>
+      <FlatList
+        data={this.props.employees}
+        renderItem={this.renderRow}
+        keyExtractor={employee => employee.uid}
+      />
+      // <View>
+      //   <Text>Employee List</Text>
+      //   <Text>Employee List</Text>
+      //   <Text>Employee List</Text>
+      //   <Text>Employee List</Text>
+      //   <Text>Employee List</Text>
+      //   <Text>Employee List</Text>
+      // </View>
     );
   }
 }
 
-export default connect(null, { employeesFetch })(EmployeeList);
+const mapStateToProps = state => {
+  // for every key value pair in state.employees
+  //   i will take the employee model represented as val
+  //   and the user id for that record
+  //      then return and object containing all props belonging to employeeModel aka val
+  //      and the user id
+  // remember the fat arrow function gets called on every key:value pair inside state.employees
+  // with that current val, and uid
+  // performing the action inside the return stmt
+  //    ...creating a new object pushing all the values from user model (name, phone shift)
+  //    and also throw the ID on top
+  // END RESULT: { shift: 'Monday', name: 'Sa', id: 'as13r2' };
+  // we craft the above object for each item in the array
+  // we collect all those objects and store them in the const employees
+  const employees = _.map(state.employees, (val, uid) => {
+    return { ...val, uid };
+  });
+  return { employees };
+};
+
+export default connect(mapStateToProps, { employeesFetch })(EmployeeList);
 
 /*
   What To do
