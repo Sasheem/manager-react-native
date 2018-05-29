@@ -1,6 +1,10 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
-import { EMPLOYEE_UPDATE, EMPLOYEE_CREATE } from './types';
+import {
+  EMPLOYEE_UPDATE,
+  EMPLOYEE_CREATE,
+  EMPLOYEES_FETCH_SUCCESS
+ } from './types';
 
 export const employeeUpdate = ({ prop, value }) => {
   return {
@@ -8,7 +12,6 @@ export const employeeUpdate = ({ prop, value }) => {
     payload: { prop, value }
   };
 };
-// email, phone, and shift fields
 
 export const employeeCreate = ({ name, phone, shift }) => {
 
@@ -27,6 +30,19 @@ export const employeeCreate = ({ name, phone, shift }) => {
       .then(() => {
         dispatch({ type: EMPLOYEE_CREATE });
         Actions.pop();
+      });
+  };
+};
+
+// this will be an async action so use redux thunk
+export const employeesFetch = () => {
+  const { currentUser } = firebase.auth();
+
+  return (dispatch) => {
+    firebase.database().ref(`/users/${currentUser.uid}/employees`)
+      .on('value', snapshot => {
+        // object we use to get a handle of our list of employees
+        dispatch({ type: EMPLOYEES_FETCH_SUCCESS, payload: snapshot.val() });
       });
   };
 };
