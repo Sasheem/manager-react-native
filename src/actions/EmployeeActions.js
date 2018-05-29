@@ -39,6 +39,7 @@ export const employeesFetch = () => {
   const { currentUser } = firebase.auth();
 
   return (dispatch) => {
+    // this action creator will watch for the entirety of our applications life cycle
     firebase.database().ref(`/users/${currentUser.uid}/employees`)
       .on('value', snapshot => {
         // object we use to get a handle of our list of employees
