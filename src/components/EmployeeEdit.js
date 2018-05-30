@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import EmployeeForm from './EmployeeForm';
-import { employeeUpdate } from '../actions';
+import { employeeUpdate, employeeSave } from '../actions';
 import { Card, CardSection, Button } from './common';
 
 class EmployeeEdit extends Component {
@@ -19,7 +19,13 @@ class EmployeeEdit extends Component {
 
   onButtonPress() {
     const { name, phone, shift } = this.props;
-    console.log(name, phone, shift);
+    // the uid is an argument we get when from ListItem.js upon navigation
+    this.props.employeeSave({
+      name, 
+      phone,
+      shift,
+      uid: this.props.employee.uid
+    });
   }
 
   render() {
@@ -41,7 +47,9 @@ const mapStateToProps = (state) => {
   return { name, phone, shift };
 };
 
-export default connect(mapStateToProps, { employeeUpdate })(EmployeeEdit);
+export default connect(mapStateToProps, {
+  employeeUpdate, employeeSave
+})(EmployeeEdit);
 
 /*
   What we need to do now
@@ -50,4 +58,8 @@ export default connect(mapStateToProps, { employeeUpdate })(EmployeeEdit);
     -form always gets navigated to with an employee in mind
       will load into a reducer
     -another action creator that will update an employee
+*/
+
+/*
+  make action creator to send updated form data to firebase
 */
