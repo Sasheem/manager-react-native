@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import Communications from 'react-native-communications';
 import EmployeeForm from './EmployeeForm';
 import { employeeUpdate, employeeSave } from '../actions';
-import { Card, CardSection, Button } from './common';
+import { Card, CardSection, Button, Confirm } from './common';
 
 class EmployeeEdit extends Component {
+  state = { showModal: false };
+
   componentWillMount() {
     // for each prop in this.props.employee with the key value pairs: id, name, phone and shift
     // arg 1: understand there is an employee model coming into this component
@@ -34,6 +36,10 @@ class EmployeeEdit extends Component {
     Communications.text(phone, `Your upcoming shift is on ${shift}`);
   }
 
+  // onFirePress() {
+  //   this.setState({ showModal: !this.state.showModal });
+  // }
+
   render() {
     return (
       <Card>
@@ -46,8 +52,17 @@ class EmployeeEdit extends Component {
         <CardSection>
           <Button onPress={this.onTextPress.bind(this)}>
             Text Schedule
-          </Button
+          </Button>
         </CardSection>
+        <CardSection>
+          <Button onPress={() => this.setState({ showModal: !this.state.showModal })}>
+            Fire Employee
+          </Button>
+        </CardSection>
+
+        <Confirm visible={this.state.showModal}>
+          Are you sure you want to delete this?
+        </Confirm>
       </Card>
     );
   }
