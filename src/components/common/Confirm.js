@@ -13,14 +13,13 @@ const Confirm = ({ children, visible, onAccept, onDecline }) => {
       visible={visible}
       transparent
       animationType="slide"
-      onRequestClose={() => { console.log('for android') }}   // passing empty fn b/c android requires it
+      onRequestClose={() => {}}   // passing empty fn b/c android requires it
     >
       <View style={containerStyle}>
         <CardSection style={cardSectionStyle}>
           <Text style={textStyle}>{children}</Text>
         </CardSection>
         <CardSection>
-          // passing reference to onAccept function by passing it w/o ()
           <Button onPress={onAccept}>Yes</Button>
           <Button onPress={onDecline}>No</Button>
         </CardSection>
